@@ -2,12 +2,14 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from inventory.models import Artist, Album
 from inventory.forms import AlbumForm, ArtistForm
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def index(request):
     artists = Artist.objects.all()
     return render(request, "inventory/index.html", locals())
 
+@login_required
 def album_new(request):
     if request.method == "POST":
         form = AlbumForm(request.POST)
@@ -20,6 +22,7 @@ def album_new(request):
         heading = "Album"
         return render(request, 'inventory/new.html', locals())
 
+@login_required
 def artist_new(request):
     if request.method == "POST":
         form = ArtistForm(request.POST)
